@@ -102,6 +102,14 @@
                 <?php endforeach;?>
                 </tbody>
             </table>
+            <br>
+        <B>All Players:</B>
+            @foreach($playersbyteam as $team=>$players)
+            <h5>{{$team}}</h5>
+                @foreach($players as $player)
+                    <li>{{$player->player_name}}</li>
+                @endforeach
+            @endforeach    
         </div> 
 	</div>
 </div>

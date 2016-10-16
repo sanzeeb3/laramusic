@@ -27,8 +27,9 @@ class BetController extends Controller
     		
     	if(Auth::check() && Auth::user()->role==1)
     	{	
-    		$matchesbydate=Match::with('result')->where('start_date','>',$minus)->orderBy('start_date')->get()->groupBy('start_date');	    	
-	    	return view('bet.admin')->with(['matchesbydate'=>$matchesbydate,'now'=>$now,'winners'=>$winners]);	
+    		$matchesbydate=Match::with('result')->where('start_date','>',$minus)->orderBy('start_date')->get()->groupBy('start_date');
+    		$playersbyteam=Player::all()->groupBy('team');	    	
+	    	return view('bet.admin')->with(['matchesbydate'=>$matchesbydate,'now'=>$now,'winners'=>$winners,'playersbyteam'=>$playersbyteam]);	
     	}
     	else
     	{	
@@ -158,23 +159,25 @@ class BetController extends Controller
 				echo json_encode('notloggedin');die;
 			}
 		}
-		
-	
-		$players=$request->player_name;
 
-		foreach($players as $player)
+	    $data=array();
+		$players=$request->player_name;
+		if($players)
 		{
-			if(!empty($player))
+			foreach($players as $player)
 			{
-				$data[]=[
-                    'team' => $request->team,
-                    'player_name' => $player,
-                   ];  
+				if(!empty($player))
+				{
+					$data[]=[
+                    	'team' => $request->team,
+                    	'player_name' => $player,
+                   	];  
+				}
 			}
+
+			Player::insert($data);
+			echo json_encode(TRUE);die;	 	
 		}
-		
-		Player::insert($data);
-		echo json_encode(TRUE);die;	 	
 
 	}
 
