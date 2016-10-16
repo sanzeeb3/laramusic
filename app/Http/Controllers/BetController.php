@@ -6,6 +6,7 @@ use App\Bet;
 use App\Winner;
 use Carbon\Carbon;
 use App\Result;
+use App\Player;
 use App\BetUser;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -106,6 +107,8 @@ class BetController extends Controller
 			$match->team1_value=$request->team1_value;
 			$match->team2_value=$request->team2_value;
 			$match->start_date=$request->start_date;
+			$match->update();
+		
 			if($match->update())
 			{
 				echo json_encode(true);die;
@@ -142,6 +145,37 @@ class BetController extends Controller
 				echo json_encode(TRUE);die;	 
     		}
     	}
+	}
+
+
+    public function addPlayers(Request $request)
+	{
+
+		if(!Auth::check())
+		{
+			if(Auth::user()->role!=1)
+			{
+				echo json_encode('notloggedin');die;
+			}
+		}
+		
+	
+		$players=$request->player_name;
+
+		foreach($players as $player)
+		{
+			if(!empty($player))
+			{
+				$data[]=[
+                    'team' => $request->team,
+                    'player_name' => $player,
+                   ];  
+			}
+		}
+		
+		Player::insert($data);
+		echo json_encode(TRUE);die;	 	
+
 	}
 
 	public function result(Request $request)

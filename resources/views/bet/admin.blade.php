@@ -15,6 +15,19 @@
         	}
         	?>
             <br><br>
+            <label>Add players:</label>
+            <form id="add-players" action="{{url('/bet/add-players')}}" method="POST" class="form-inline">
+            {!! csrf_field() !!}
+            Team: <input type="text" class="form-control" name="team" placeholder="Team"><br><br>
+            Player Name: <input type="text" class="form-control" name="player_name[]" placeholder="Palyer Name"> 
+               <div id="dynamicInput">
+                    <span class="glyphicon glyphicon-plus" onClick="addInput('dynamicInput');"></span>
+                </div>
+            <input type="submit" class="form-control" value="Add Player">
+            </form>
+
+            <br><br>
+            <label>Add Matches</label>
             <form id="add" action="{{url('/bet/add-match')}}" method="POST" class="form-inline">
             {!!csrf_field()!!}
             <input class="form-control" type="text" name="team1" placeholder="Team 1">
@@ -94,7 +107,29 @@
 </div>
 
 <script>
+
+function addInput(divName)
+{ 
+    var newdiv = document.createElement('div');
+    newdiv.innerHTML = "<input type='text' class='form-control' name='player_name[]' placeholder='Player Name'><br>";
+    document.getElementById(divName).appendChild(newdiv);    
+}
+
 $('#winner').DataTable();
+
+    $("#add").validate({
+
+        rules: {
+            team1_value: {
+                     required:true,
+                     number:true,
+                   },
+            team2_value: {
+                    required:true,
+                    number:true,
+                   },
+        }, 
+    });
 
     $(document).on('submit', '.update', function (e) 
     {
@@ -156,6 +191,32 @@ $('#winner').DataTable();
                  
     });  
 
+    $(document).on('submit', '#add-players', function (e) 
+    {
+        e.preventDefault();
+        var frm = $(this);
+        
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data: frm.serialize(),
+                dataType: 'json',
+                success: function (data)
+                    {
+                        if(data == 'notloggedin')
+                        {
+                            alert('You must login first!');
+                        }
+
+                        else if(data==true)
+                        {
+                            alert('Player Added!');
+                            location.reload();
+                        }
+                    }
+             });
+                 
+    });  
     $(document).on('submit', '.result', function (e) 
     {
         e.preventDefault();

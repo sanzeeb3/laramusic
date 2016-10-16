@@ -28,7 +28,7 @@ class MusicController extends Controller
 					  		$query->with('votes');
 					  }]);
 			
-			}])->orderBy('id','desc')->get(); 
+			}])->orderBy('id','desc')->get();
 
 		$view=View('music.index')->with(['questions'=>$questions,'users'=>$users]);	
 		if(Auth::check())

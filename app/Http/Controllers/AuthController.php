@@ -55,7 +55,7 @@ class AuthController extends Controller
         }
         else 
         {
-            return redirect('/login')->with('message','Invalid email or password!!');
+            abort(403, 'Unauthorized action.');
         }
    		
     }
@@ -83,7 +83,7 @@ class AuthController extends Controller
             return redirect('/login')->with('message','Email doesnot exist!');
 		}
 		
-		}
+	}
 
     public function reset($username, $token)
 	{ 			

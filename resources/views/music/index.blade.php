@@ -2,13 +2,7 @@
 @section('content')    
 <center>thetoptens</center>
 
-<form method="post" action="{{url('/auth/authenticate')}}">
-    {!! csrf_field() !!}
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="*******">
-    <input type="submit" value="login">
-</form>
-    
+
     @if ( session()->has('message') )
         <div class="alert alert-success alert-dismissable">{{ session()->get('message') }}</div>
     @endif
@@ -31,7 +25,8 @@
 
     }
 ?>
-<br><br>
+
+
 
 <textarea>Ask a question...</textarea><button class="addquestion">POST</button>
 <?php		

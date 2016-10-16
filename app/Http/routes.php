@@ -41,6 +41,7 @@
 		Route::post('music/addanswer','MusicController@addanswer');
 		Route::post('music/addcomment','MusicController@addcomment');
 		Route::post('music/addquestion','MusicController@addquestion');
+		Route::post('bet/add-players','BetController@addPlayers');
 
 	Route::group(['middleware' => ['auth']], function () {
 			Route::post('/bet/process-team','BetController@processTeam');
