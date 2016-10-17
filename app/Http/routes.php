@@ -23,7 +23,9 @@
 		Route::get('/music/delete','MusicController@delete');
 		Route::get('/music/profile','MusicController@profile');
 		Route::get('/music/index','MusicController@index');
-		Route::get('/','MusicController@index');
+		Route::get('/','BetController@index');
+
+		
 		Route::get('/login','AuthController@loginform');
 		Route::get('auth/login','AuthController@loginform');
 		Route::get('auth/logout','AuthController@logout');	
@@ -34,6 +36,10 @@
 		Route::get('auth/forgot','AuthController@forgot');
 		Route::post('auth/change','AuthController@change');
 		Route::get('auth/reset/{username}/{token}','AuthController@reset');
+		Route::get('auth/login-facebook','AuthController@redirectToProvider');
+		Route::get('auth/callback', 'AuthController@handleProviderCallback');
+
+
 		Route::post('music/upvoteanswer','MusicController@upvoteanswer');
 		Route::post('music/downvoteanswer','MusicController@downvoteanswer');
 		Route::post('music/upvotecomment','MusicController@upvotecomment');
@@ -42,7 +48,8 @@
 		Route::post('music/addcomment','MusicController@addcomment');
 		Route::post('music/addquestion','MusicController@addquestion');
 		Route::post('bet/add-players','BetController@addPlayers');
-
+		Route::post('bet/highest-scorer','BetController@highestScorer');
+	
 	Route::group(['middleware' => ['auth']], function () {
 			Route::post('/bet/process-team','BetController@processTeam');
 	});

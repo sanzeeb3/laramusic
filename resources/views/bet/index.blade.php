@@ -13,8 +13,7 @@
         		echo "</mark>";
       			?> <a href="{{url('/auth/logout')}}"><button class="btn"> logout</button></a><?php
         	}
-        	?>
-        	
+        	?>       	
 
 		 	<h1>Upcoming Matches</h1>
 		 	<?php foreach($matchesbydate as $startDate => $matches)
@@ -22,7 +21,7 @@
                 echo "<p style ='color:red; display:inline; border:solid red 2 px' > Date: $startDate</p>";
                 foreach($matches as $match)
                 {
-		 		    echo "<h2><li>$match->team1 ($match->team1_value) Vs $match->team2 ($match->team2_value)</h2> ";
+		 		    echo "<h2><li>$match->team1 ($match->team1_value) Vs $match->team2 ($match->team2_value)</h2></li> ";
                     ?><br><form class="form-inline bet" method="POST" action="{{url('/bet/process-team')}}">
 		 		    {!! csrf_field() !!}
 		 		   
@@ -35,9 +34,18 @@
 		 	        <input type="hidden" name="team1_value" value="<?php echo $match->team1_value;?>">
 		 	        <input type="hidden" name="team2_value" value="<?php echo $match->team2_value;?>">
 		 	        <input class="form-control" type="submit" value="submit">
-		 		   
-		 		   </form>
-		 		   </li>
+		 		   </form><br>
+		 	            <label>Highest Scorer</label>
+                        <form class="form-inline highest-scorer" method="POST" action="{{url('/bet/highest-scorer')}}">
+                        {!! csrf_field() !!}
+                        <select class="form-control" name="highest_scorer">
+                            @foreach($playersbyteam->whereIn('team',[$match->team1,$match->team2]) as $player)
+                            <option><?php echo $player->player_name;?></option>
+                            @endforeach
+                        <input class="form-control" type="submit" value="submit">
+                        </form><br>
+                        </select>
+
 		 		   <br><br>
 		 		   <?php
 		 	    }
@@ -55,7 +63,14 @@
                     <tr><td><?php echo $i++;?></td><td><?php echo $winner->username;?></td><td><?php echo "$winner->team1 vs $winner->team2";?></td><td><?php echo $winner->team;?></td><td><?php echo $winner->match_date;?></td><td><?php echo $winner->price;?></td><td><?php echo $winner->win_price;?></td></tr>
                 <?php endforeach;?>
                 </tbody>
-            </table>	
+            </table><br><br>	
+            <B>Players to watch for:</B>
+            @foreach($playersbyteam->groupBy('team') as $team=>$players)
+            <h5>{{$team}}</h5>
+                @foreach($players as $player)
+                    <li>{{$player->player_name}}</li>
+                @endforeach
+            @endforeach    
 		</div>
 	</div>
 </div>
@@ -114,12 +129,43 @@ $('#winner').DataTable();
              	});
  				
             jqXHR.fail(function( jqXHR, textStatus, errorThrown ) {
-            if(jqXHR.status == 401) 
-            {
-                    alert('You must login first');
-            }         
-});
+                if(jqXHR.status == 401) 
+               {
+                     alert('You must login first');
+               }         
+            });
       	});       
+    });  
+
+    $(document).on('submit', '.highest-scorer', function (e) 
+    {
+        e.preventDefault();
+        var frm = $(this);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to cancel the bet!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, confirm bet!",
+            closeOnConfirm: false
+        },
+            function(){
+            $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    dataType: 'json',
+                    success: function (data)
+                        {
+
+                            if(data=='UnderConstruction')
+                            {
+                                sweetAlert("Oops...", "Players Bet Under Construction! Bet not registered", "error");
+                            }
+                        }
+            });
+        });       
     });  
 </script>
 @endsection

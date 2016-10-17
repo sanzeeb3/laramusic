@@ -8,6 +8,7 @@
             @if ( session()->has('message') )
                 <div class="alert alert-success alert-dismissable">{{ session()->get('message') }}</div>
             @endif
+            <a href="{{url('auth/login-facebook')}}">Login with facebook</a>
             <h2>Login to your account</h2>
                 <form method="POST" id="login" role="form" action="{{url('/auth/authenticate')}}">
                     {!! csrf_field() !!}

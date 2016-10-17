@@ -65,6 +65,13 @@
                                 <option value="1"><?php echo $match->team1;?></option>
                                 <option value="2"><?php echo $match->team2;?></option>
                             </select>
+                            <legend>Highest Scorer</legend>
+                            <select class="form-control" name="highest_scorer">
+                                @foreach($playersbyteam->whereIn('team',[$match->team1,$match->team2]) as $player)
+                                    <option value="<?php echo $player->player_name;?>"><?php echo $player->player_name;?></option>
+                                @endforeach
+                            </select>
+                            
                             <input type="hidden" name="id" value="<?php echo $match->id;?>">
                             <input class="form-control" type="submit" value="Award winner">
                             <br>                    
@@ -104,7 +111,7 @@
             </table>
             <br>
         <B>All Players:</B>
-            @foreach($playersbyteam as $team=>$players)
+            @foreach($playersbyteam->groupBy('team') as $team=>$players)
             <h5>{{$team}}</h5>
                 @foreach($players as $player)
                     <li>{{$player->player_name}}</li>

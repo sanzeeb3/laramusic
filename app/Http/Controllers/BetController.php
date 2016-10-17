@@ -16,25 +16,27 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
+
 class BetController extends Controller
 {
     public function index()
 	{
 		$now = Carbon::now();
-	    $week= Carbon::now()->addWeek();
-	    $minus=Carbon::now()->subweek();
+	    $week= Carbon::now()->subWeek();
 		$winners=Winner::all();
+		$playersbyteam=Player::orderBy('team')->get(); 
     		
+
     	if(Auth::check() && Auth::user()->role==1)
     	{	
-    		$matchesbydate=Match::with('result')->where('start_date','>',$minus)->orderBy('start_date')->get()->groupBy('start_date');
-    		$playersbyteam=Player::all()->groupBy('team');	    	
-	    	return view('bet.admin')->with(['matchesbydate'=>$matchesbydate,'now'=>$now,'winners'=>$winners,'playersbyteam'=>$playersbyteam]);	
+    		$matchesbydate=Match::with('result')->where('start_date','>',$week)->orderBy('start_date')->get()->groupBy('start_date');    	
+    		return view('bet.admin')->with(['matchesbydate'=>$matchesbydate,'now'=>$now,'winners'=>$winners,'playersbyteam'=>$playersbyteam]);	
     	}
     	else
     	{	
-    		$matchesbydate=Match::where('start_date','>',$now)->where('start_date','<',$week)->orderBy('start_date')->get()->groupBy('start_date');
-	    	return view('bet.index')->with(['matchesbydate'=>$matchesbydate,'winners'=>$winners]);
+    		$matchesbydate=Match::where('start_date','>',$now)->orderBy('start_date')->get()->groupBy('start_date');
+	    	
+	    	return view('bet.index')->with(['matchesbydate'=>$matchesbydate,'winners'=>$winners,'playersbyteam'=>$playersbyteam]);
     	}
     }
 
@@ -148,6 +150,12 @@ class BetController extends Controller
     	}
 	}
 
+	public function highestScorer(Request $request)
+	{
+
+		echo json_encode('UnderConstruction');die;	 	
+	}
+
 
     public function addPlayers(Request $request)
 	{
@@ -207,6 +215,7 @@ class BetController extends Controller
 				$result->won_by=$match->team2;
 			}
 
+			$result->highest_scorer=$request->highest_scorer;
 			$result->save();
 			$match->with('result','bets','bets.users');
 		
@@ -239,11 +248,7 @@ class BetController extends Controller
 					}
 				}
 			}
-
-
-
 			echo json_encode(TRUE);die;	 
-    		
     	}
     	echo json_encode(FALSE);die;	 
 	}
