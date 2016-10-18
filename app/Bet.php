@@ -14,11 +14,6 @@ class Bet extends model
         return $this->belongsTo('App\Match','match_id');
     }
 
-    public function user()
-    {
-        return $this->belongsTo('App\Match','user_id');
-    }
-
     public function users()
     {
         return $this->belongsToMany('App\User','bet_user','bet_id','user_id'); //The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:

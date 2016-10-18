@@ -20,4 +20,9 @@ class Match extends model
         return $this->hasMany('App\Bet','match_id');
     }
 
+    public function betplayers()
+    {
+        return $this->hasMany('App\BetPlayer','match_id');
+    }
+
 }

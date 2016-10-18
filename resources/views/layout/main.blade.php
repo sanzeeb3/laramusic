@@ -11,8 +11,8 @@
 <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>
 <link href="{{asset('sweetalert.css')}}" rel="stylesheet">
 <script src="{{asset('sweetalert.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script> -->
 </head>
 <style>
 #question

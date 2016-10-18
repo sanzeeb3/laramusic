@@ -130,7 +130,7 @@ function addInput(divName)
     document.getElementById(divName).appendChild(newdiv);    
 }
 
-$('#winner').DataTable();
+// $('#winner').DataTable();
 
     $("#add").validate({
 
@@ -148,6 +148,7 @@ $('#winner').DataTable();
 
     $(document).on('submit', '.update', function (e) 
     {
+
         e.preventDefault();
         var frm = $(this);
      	
@@ -252,8 +253,8 @@ $('#winner').DataTable();
 
                         else if(data==true)
                         {                
-                                alert('awarded!');
-                                location.reload();
+                            alert('awarded!');
+                            location.reload();
                         }
                     }
              });

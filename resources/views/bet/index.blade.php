@@ -35,12 +35,13 @@
 		 	        <input type="hidden" name="team2_value" value="<?php echo $match->team2_value;?>">
 		 	        <input class="form-control" type="submit" value="submit">
 		 		   </form><br>
-		 	            <label>Highest Scorer</label>
+		 	            <label>Highest Scorer (Bet Rs. 100)</label>
                         <form class="form-inline highest-scorer" method="POST" action="{{url('/bet/highest-scorer')}}">
                         {!! csrf_field() !!}
+                        <input type="hidden" name="id" value="<?php echo $match->id;?>">
                         <select class="form-control" name="highest_scorer">
                             @foreach($playersbyteam->whereIn('team',[$match->team1,$match->team2]) as $player)
-                            <option><?php echo $player->player_name;?></option>
+                            <option value="<?php echo $player->player_name;?>"><?php echo $player->player_name;?></option>
                             @endforeach
                         <input class="form-control" type="submit" value="submit">
                         </form><br>
@@ -76,9 +77,7 @@
 </div>
 
 <script>
-$('#winner').DataTable();
-
-
+// $('#winner').DataTable();
     $(".bet").validate({
 
         rules: {
@@ -137,13 +136,14 @@ $('#winner').DataTable();
       	});       
     });  
 
+    
     $(document).on('submit', '.highest-scorer', function (e) 
     {
         e.preventDefault();
         var frm = $(this);
         swal({
-            title: "Are you sure?",
-            text: "You will not be able to cancel the bet!",
+            title: "Are you sure you want to bet Rs. 100 on this player?",
+            text: "You will not be able to cancel the bet! ",
             type: "warning",
             showCancelButton: true,
             confirmButtonClass: "btn-danger",
@@ -151,19 +151,36 @@ $('#winner').DataTable();
             closeOnConfirm: false
         },
             function(){
-            $.ajax({
+            var jqXHR=$.ajax({
                     type: frm.attr('method'),
                     url: frm.attr('action'),
                     data: frm.serialize(),
                     dataType: 'json',
                     success: function (data)
                         {
-
-                            if(data=='UnderConstruction')
+             
+                            if(data == 'notloggedin')
                             {
-                                sweetAlert("Oops...", "Players Bet Under Construction! Bet not registered", "error");
+                                alert('You must login first!');
+                            }
+
+                            else if(data==true)
+                            {
+                                swal('Bet Success! The details has been sent to your email!');
+                            }
+
+                            else if(data=='dateexpired')
+                            {
+                                swal('The match bet time expired!');
                             }
                         }
+                });
+                
+            jqXHR.fail(function( jqXHR, textStatus, errorThrown ) {
+                if(jqXHR.status == 401) 
+               {
+                     alert('You must login first');
+               }         
             });
         });       
     });  
