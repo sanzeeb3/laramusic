@@ -17,13 +17,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Socialite;
 
 
 class BetController extends Controller
 {
     public function index()
 	{
-		$now = Carbon::now();
+        $now = Carbon::now();
 	    $week= Carbon::now()->subWeek();
 		$winners=Winner::all();
 		$playersbyteam=Player::orderBy('team')->get(); 
@@ -49,7 +50,7 @@ class BetController extends Controller
 			echo json_encode('notloggedin');die;
 		}
 
-		else if(Auth::check() && $request->all)
+		else if(Auth::check() && $request->all())
 		{
 			$match=Match::where(['id'=>$request->id])->first();
 
@@ -279,7 +280,7 @@ class BetController extends Controller
 		 			}
 
 					$match->with('result','bets','betplayers','bets.users','betplayers.users');
-					dd($match);
+
 					
 					foreach($match->betplayers as $betplayer)
 					{

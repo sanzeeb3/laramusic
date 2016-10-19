@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-// use Socialite;
+use Socialite;
 
 
 class AuthController extends Controller
@@ -19,23 +19,17 @@ class AuthController extends Controller
 		return View('auth.login');
 	}
 	
-	// public function redirectToProvider()
-	// {
- //    	 return Socialite::driver('facebook')->redirect();
-	// }
+	public function redirectToProvider()
+	{
+    	 return Socialite::driver('facebook')->redirect();
+	}
 
-	// public function handleProviderCallback()
-	// {
- //    	 $user = Socialite::driver('facebook')->user();
- //    	 $user->token;
- //    	 $user->getId();
-	// 	 $user->getNickname();
-	// 	 $user->getName();
-	// 	 $user->getEmail();
-	// 	 $user->getAvatar();
-
-	// 	 dd($user->getEmail);
-	// }
+	public function handleProviderCallback()
+	{
+    	 $user = Socialite::driver('facebook')->user();
+    	 dd($user);
+    	
+	}
 
 	public function register(Request $request)
 	{

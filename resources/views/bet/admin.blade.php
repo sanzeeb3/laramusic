@@ -130,7 +130,7 @@ function addInput(divName)
     document.getElementById(divName).appendChild(newdiv);    
 }
 
-// $('#winner').DataTable();
+$('#winner').DataTable();
 
     $("#add").validate({
 

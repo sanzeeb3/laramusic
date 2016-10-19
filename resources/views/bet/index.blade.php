@@ -77,7 +77,7 @@
 </div>
 
 <script>
-// $('#winner').DataTable();
+$('#winner').DataTable();
     $(".bet").validate({
 
         rules: {
