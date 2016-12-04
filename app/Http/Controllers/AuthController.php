@@ -27,9 +27,21 @@ class AuthController extends Controller
 	public function handleProviderCallback()
 	{
     	 $user = Socialite::driver('facebook')->user();
-    	 dd($user);
-    	
+    	 dd($user);	
 	}
+
+	public function googleLogin()
+	{
+		return Socialite::driver('google')->redirect();
+	}
+
+	public function googleCallback()
+	{
+		$user= Socialite::driver('google')->user();
+		dd($user);
+	}
+
+	
 
 	public function register(Request $request)
 	{

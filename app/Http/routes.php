@@ -38,7 +38,8 @@
 		Route::get('auth/reset/{username}/{token}','AuthController@reset');
 		Route::get('auth/login-facebook','AuthController@redirectToProvider');
 		Route::get('auth/callback', 'AuthController@handleProviderCallback');
-
+		Route::get('auth/google-login', 'AuthController@googleLogin');
+		Route::get('auth/google-callback', 'AuthController@googleCallback');
 
 		Route::post('music/upvoteanswer','MusicController@upvoteanswer');
 		Route::post('music/downvoteanswer','MusicController@downvoteanswer');

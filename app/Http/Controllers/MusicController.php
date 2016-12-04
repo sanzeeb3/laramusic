@@ -14,11 +14,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use DB;
+use File;
 
 class MusicController extends Controller
 {
     public function index()
 	{
+
 		$users=User::all();
 		$questions=Question::with(['users','answers'=>function($query)
 			{

@@ -38,6 +38,12 @@ return [
     'facebook' => [
         'client_id' => '690925494396768',
         'client_secret' => 'c6ae39d6daa459d65654ed4ff9a68a32',
-        'redirect' => 'http://localhost/laramusic/public/bet',
+        'redirect' => 'http://localhost/laramusic/public/callback/',
+        ],
+
+    'google' => [
+        'client_id' => '847182856053-v7f0lc41lrldd5ja6rj3rr6o0tc22rot.apps.googleusercontent.com',
+        'client_secret' => '4JsJzaR8bGFyObJKXpKgAMAs',
+        'redirect' => 'http://localhost/laramusic/public/auth/google-callback',
         ],
 ];

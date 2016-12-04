@@ -29,7 +29,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function questions()
     {
-    	return $this->belongsToMany('App\Question','question_user','user_id','q_id');    //question_user alphabetical order of relation
+    	return $this->belongsToMany('App\Question','question_user','user_id','q_id')  ->wherePivot('approved',  1);  //question_user alphabetical order of relation
     }
 
     public function answers()
@@ -44,7 +44,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function votes()
     {
-        return $this->hasMany('App\Vote','user_id','id');    
+        return $this->hasMany('App\Vote','user_id','id')
+                 ;       
     }
 
     public function bets()
@@ -56,4 +57,5 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->belongsToMany('App\BetPlayer','betplayer_user','user_id','betplayer_id');
     }
+
 }

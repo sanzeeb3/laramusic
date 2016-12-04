@@ -13,7 +13,7 @@ class Question extends model
 
     public function users()
     {
-        return $this->belongsToMany('App\User','question_user','q_id','user_id'); //The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
+        return $this->belongsToMany('App\User','question_user','q_id','user_id')->wherePivot('approved',  1); //The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
     }
 
     public function answers()
